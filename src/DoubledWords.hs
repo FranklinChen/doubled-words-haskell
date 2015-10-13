@@ -7,6 +7,7 @@ module DoubledWords
        ) where
 
 import Control.Arrow ((>>>))
+import qualified Data.List as List
 
 -- | Our definition of a word, once parsing is complete.
 --
@@ -48,4 +49,18 @@ lineToWordInfos lineNumber =
 -- | Rid info for words without adjacent duplicates, and
 -- keep only the latest of each run of duplicates.
 keepOnlyLatestDuplicates :: [WordInfo] -> [WordInfo]
-keepOnlyLatestDuplicates = undefined
+keepOnlyLatestDuplicates =
+  List.groupBy isSameWord
+  >>> filter isDuplicatedGroup
+  >>> map last
+
+-- | Whether two words are the same, for the purpose of detecting
+-- duplicates. Here we just compare the chars.
+isSameWord :: WordInfo -> WordInfo -> Bool
+isSameWord info1 info2 =
+  _word info1 == _word info2
+
+-- | A group with at least 2 elements is duplicated.
+isDuplicatedGroup :: [WordInfo] -> Bool
+isDuplicatedGroup (_:_:_) = True
+isDuplicatedGroup _ = False
