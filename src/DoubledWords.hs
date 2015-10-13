@@ -5,6 +5,8 @@ module DoubledWords
        , doubledWords
        ) where
 
+import Control.Arrow ((>>>))
+
 -- | Our definition of a word, once parsing is complete.
 --
 -- (newtype is Haskell's zero-runtime-cost wrapper to avoid
@@ -23,4 +25,13 @@ data WordInfo =
 -- | Return information about each run of doubled words.
 doubledWords :: String
              -> [WordInfo]
-doubledWords = undefined
+doubledWords =
+  lines
+  >>> zipWith lineToWordInfos [1..]
+  >>> concat
+
+-- | Distribute a line number into parsing a line into words.
+lineToWordInfos :: Int        -- ^ 1-based line number
+                -> String     -- ^ a line of text
+                -> [WordInfo] -- ^ info for each word in the line
+lineToWordInfos = undefined
