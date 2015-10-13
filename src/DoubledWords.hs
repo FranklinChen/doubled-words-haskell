@@ -26,6 +26,11 @@ data WordInfo =
 doubledWords :: String
              -> [WordInfo]
 doubledWords =
+  stringToWordInfos
+
+-- | Analyze a string all the way to line-tagged words.
+stringToWordInfos :: String -> [WordInfo]
+stringToWordInfos =
   lines
   >>> zipWith lineToWordInfos [1..]
   >>> concat
