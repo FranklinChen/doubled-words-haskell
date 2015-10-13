@@ -34,4 +34,6 @@ doubledWords =
 lineToWordInfos :: Int        -- ^ 1-based line number
                 -> String     -- ^ a line of text
                 -> [WordInfo] -- ^ info for each word in the line
-lineToWordInfos = undefined
+lineToWordInfos lineNumber =
+  words
+  >>> map (OurWord >>> WordInfo lineNumber)
