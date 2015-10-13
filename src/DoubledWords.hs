@@ -3,6 +3,7 @@ module DoubledWords
          OurWord(..)
        , WordInfo(..)
        , doubledWords
+       , keepOnlyLatestDuplicates
        ) where
 
 import Control.Arrow ((>>>))
@@ -27,6 +28,7 @@ doubledWords :: String
              -> [WordInfo]
 doubledWords =
   stringToWordInfos
+  >>> keepOnlyLatestDuplicates
 
 -- | Analyze a string all the way to line-tagged words.
 stringToWordInfos :: String -> [WordInfo]
@@ -42,3 +44,8 @@ lineToWordInfos :: Int        -- ^ 1-based line number
 lineToWordInfos lineNumber =
   words
   >>> map (OurWord >>> WordInfo lineNumber)
+
+-- | Rid info for words without adjacent duplicates, and
+-- keep only the latest of each run of duplicates.
+keepOnlyLatestDuplicates :: [WordInfo] -> [WordInfo]
+keepOnlyLatestDuplicates = undefined
